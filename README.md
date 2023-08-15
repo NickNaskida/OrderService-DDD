@@ -6,7 +6,9 @@ Based on the insights from the book: [Architecture Patterns with Python: Enablin
 
 ### Architecture
 
-### Running the Project
+### Code Architecture
+
+### Project Setup
 
 This project utilizes Docker Compose to run the application.
 
