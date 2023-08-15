@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 
 import pytest
-from features.allocation.domain import allocate, OrderLine, Batch, OutOfStock
+from src.features.allocation.domain.model import allocate, OrderLine, Batch, OutOfStock
 
 today = date.today()
 tomorrow = today + timedelta(days=1)

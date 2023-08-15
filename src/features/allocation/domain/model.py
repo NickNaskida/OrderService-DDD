@@ -3,9 +3,7 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Optional, List
 
-
-class OutOfStock(Exception):
-    pass
+from src.features.allocation.domain.exceptions import OutOfStock
 
 
 def allocate(line: OrderLine, batches: List[Batch]) -> str:
@@ -14,10 +12,10 @@ def allocate(line: OrderLine, batches: List[Batch]) -> str:
         batch.allocate(line)
         return batch.reference
     except StopIteration:
-        raise OutOfStock(f"Out of stock for sku {line.sku}")
+        raise OutOfStock(line.sku)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=True)
 class OrderLine:
     orderid: str
     sku: str

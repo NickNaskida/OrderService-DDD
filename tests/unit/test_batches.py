@@ -1,5 +1,5 @@
 from datetime import date
-from features.allocation.domain import Batch, OrderLine
+from src.features.allocation.domain.model import Batch, OrderLine
 
 
 def test_allocating_to_a_batch_reduces_the_available_quantity():
