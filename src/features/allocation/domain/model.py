@@ -15,8 +15,13 @@ def allocate(line: OrderLine, batches: List[Batch]) -> str:
         raise OutOfStock(line.sku)
 
 
-@dataclass(frozen=True, eq=True)
+@dataclass(unsafe_hash=True, eq=True)
 class OrderLine:
+    """
+    Order line entity.
+
+    unsafe_hash instead of frozen - https://github.com/cosmicpython/code/issues/17
+    """
     orderid: str
     sku: str
     qty: int
