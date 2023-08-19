@@ -17,3 +17,6 @@ def session(in_memory_db):
     start_mappers()
     yield sessionmaker(bind=in_memory_db)()
     clear_mappers()
+
+
+# TODO: Add e2e api tests and integration uow tests

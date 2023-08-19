@@ -1,6 +1,5 @@
 from datetime import datetime
-from http import HTTPStatus
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status
 
 from src.features.allocation.infrastructure import orm
 from src.features.allocation.api.schema import BatchItem, OrderItem
@@ -11,7 +10,7 @@ app = FastAPI()
 orm.start_mappers()
 
 
-@app.post("/add_batch", status_code=HTTPStatus.CREATED)
+@app.post("/add_batch", status_code=status.HTTP_201_CREATED)
 def add_batch(item: BatchItem):
     eta = item.eta
 
@@ -28,7 +27,7 @@ def add_batch(item: BatchItem):
     return "OK"
 
 
-@app.post("/allocate", status_code=HTTPStatus.CREATED)
+@app.post("/allocate", status_code=status.HTTP_201_CREATED)
 def allocate_endpoint(item: OrderItem):
     try:
         batchref = services.allocate(
@@ -38,8 +37,8 @@ def allocate_endpoint(item: OrderItem):
             unit_of_work.SqlAlchemyUnitOfWork(),
         )
     except (OutOfStock, InvalidSku) as e:
-        return HTTPException(
-            status_code=HTTPStatus.BAD_REQUEST,
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
         )
 
