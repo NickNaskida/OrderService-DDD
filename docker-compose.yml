@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+  backend:
+    container_name: backend
+    build: .
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    volumes:
+      - ./backend-data:/
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - envs/.env.example
+
+  postgres:
+    container_name: postgres
+    image: postgres:15.4-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - envs/container.env
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  redis:
+    container_name: redis
+    image: redis:7.2-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    env_file:
+      - envs/container.env
+    volumes:
+      - ./redis-data:/data
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.9.10-management-alpine
+    restart: unless-stopped
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - rabbitmq
+    env_file:
+      - envs/container.env
+    volumes:
+      - ./rabbitmq-data:/var/lib/rabbitmq
+
+
+networks:
+  rabbitmq:
+    driver: bridge
+
+
+volumes:
+  backend-data:
+    name: backend-data
+  postgres-data:
+    name: postgres-data
+  redis-data:
+    name: redis-data
+  rabbitmq-data:
+    name: rabbitmq-data

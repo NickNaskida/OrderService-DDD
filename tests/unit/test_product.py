@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+
 import pytest
 from src.features.allocation.domain.model import Product, OrderLine, Batch, OutOfStock
 
