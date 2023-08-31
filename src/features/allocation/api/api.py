@@ -1,16 +1,16 @@
 from datetime import datetime
-from fastapi import FastAPI, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 
 from src.features.allocation.infrastructure import orm
 from src.features.allocation.api.schema import BatchItem, OrderItem
 from src.features.allocation.service_layer import services, unit_of_work
 from src.features.allocation.domain.exceptions import InvalidSku, OutOfStock
 
-app = FastAPI()
+api_router = APIRouter()
 orm.start_mappers()
 
 
-@app.post("/add_batch", status_code=status.HTTP_201_CREATED)
+@api_router.post("/add_batch", status_code=status.HTTP_201_CREATED)
 def add_batch(item: BatchItem):
     eta = item.eta
 
@@ -27,7 +27,7 @@ def add_batch(item: BatchItem):
     return "OK"
 
 
-@app.post("/allocate", status_code=status.HTTP_201_CREATED)
+@api_router.post("/allocate", status_code=status.HTTP_201_CREATED)
 def allocate_endpoint(item: OrderItem):
     try:
         batchref = services.allocate(

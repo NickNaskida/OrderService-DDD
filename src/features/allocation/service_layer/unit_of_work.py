@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
-from src.core import config
+from src.core import utils
 from src.features.allocation.infrastructure import repository
 
 
@@ -28,7 +28,7 @@ class AbstractUnitOfWork(ABC):
 
 DEFAULT_SESSION_FACTORY = sessionmaker(
     bind=create_engine(
-        config.get_postgres_uri(),
+        utils.get_postgres_uri(),
         isolation_level="REPEATABLE READ",
     )
 )
