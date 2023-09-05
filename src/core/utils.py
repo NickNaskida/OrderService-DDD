@@ -18,4 +18,5 @@ def get_redis_uri():
 def get_api_url():
     """Returns the URL for the API."""
     host, port = settings.API_HOST, settings.API_PORT
-    return f"http://{host}:{port}"
+    api_url = settings.API_V1_STR
+    return f"http://{host}:{port}" + api_url
