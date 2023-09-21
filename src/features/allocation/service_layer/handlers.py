@@ -3,13 +3,10 @@ from typing import TYPE_CHECKING
 from src.features.allocation.infrastructure import email
 from src.features.allocation.domain import commands, events, model
 from src.features.allocation.domain.model import OrderLine
+from src.features.allocation.domain.exceptions import InvalidSku
 
 if TYPE_CHECKING:
     from . import unit_of_work
-
-
-class InvalidSku(Exception):
-    pass
 
 
 def add_batch(
@@ -33,7 +30,7 @@ def allocate(
     with uow:
         product = uow.products.get(sku=line.sku)
         if product is None:
-            raise InvalidSku(f"Invalid sku {line.sku}")
+            raise InvalidSku(line.sku)
         batchref = product.allocate(line)
         uow.commit()
         return batchref

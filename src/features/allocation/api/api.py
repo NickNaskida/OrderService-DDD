@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, status
 from src.features.allocation.domain import commands
 from src.features.allocation.api.schema import BatchItem, OrderItem
 from src.features.allocation.service_layer import messagebus, unit_of_work
-from src.features.allocation.domain.exceptions import InvalidSku
+from src.features.allocation.domain.exceptions import InvalidSku, OutOfStock
 
 api_router = APIRouter()
 
@@ -29,7 +29,7 @@ def allocate_endpoint(item: OrderItem):
         uow = unit_of_work.SqlAlchemyUnitOfWork()
         results = messagebus.handle(cmd, uow)
         batchref = results.pop()
-    except InvalidSku as e:
+    except (InvalidSku, OutOfStock) as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)

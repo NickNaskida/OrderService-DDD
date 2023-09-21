@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
   backend:
+    container_name: backend
     build: .
     ports:
       - "8000:8000"
@@ -16,6 +17,7 @@ services:
       - envs/.env.example
 
   postgres:
+    container_name: postgres
     image: postgres:15.4-alpine
     restart: always
     ports:
@@ -26,6 +28,7 @@ services:
       - ./data/postgres-data:/var/lib/postgresql/data
 
   redis:
+    container_name: redis
     image: redis:7.2-alpine
     restart: always
     ports:
@@ -36,6 +39,7 @@ services:
       - ./data/redis-data:/data
 
   rabbitmq:
+    container_name: rabbitmq
     image: rabbitmq:3.9.10-management-alpine
     restart: unless-stopped
     ports:
