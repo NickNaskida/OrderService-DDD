@@ -17,8 +17,16 @@ class AbstractUnitOfWork(ABC):
     def __exit__(self, *args):
         self.rollback()
 
-    @abstractmethod
     def commit(self):
+        self._commit()
+
+    def collect_new_events(self):
+        for product in self.products.seen:
+            while product.events:
+                yield product.events.pop(0)
+
+    @abstractmethod
+    def _commit(self):
         raise NotImplementedError
 
     @abstractmethod
@@ -47,7 +55,7 @@ class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
         super().__exit__(*args)
         self.session.close()
 
-    def commit(self):
+    def _commit(self):
         self.session.commit()
 
     def rollback(self):

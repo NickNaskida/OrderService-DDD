@@ -1,9 +1,10 @@
 from datetime import datetime
 from fastapi import APIRouter, HTTPException, status
 
+from src.features.allocation.domain import commands
 from src.features.allocation.api.schema import BatchItem, OrderItem
-from src.features.allocation.service_layer import services, unit_of_work
-from src.features.allocation.domain.exceptions import InvalidSku, OutOfStock
+from src.features.allocation.service_layer import messagebus, unit_of_work
+from src.features.allocation.domain.exceptions import InvalidSku
 
 api_router = APIRouter()
 
@@ -15,26 +16,20 @@ def add_batch(item: BatchItem):
     if eta is not None:
         eta = datetime.fromisoformat(eta).date()
 
-    services.add_batch(
-        item.ref,
-        item.sku,
-        item.qty,
-        eta,
-        unit_of_work.SqlAlchemyUnitOfWork()
-    )
+    cmd = commands.CreateBatch(item.ref, item.sku, item.qty, eta)
+    uow = unit_of_work.SqlAlchemyUnitOfWork()
+    messagebus.handle(cmd, uow)
     return "OK"
 
 
 @api_router.post("/allocate", status_code=status.HTTP_201_CREATED)
 def allocate_endpoint(item: OrderItem):
     try:
-        batchref = services.allocate(
-            item.orderid,
-            item.sku,
-            item.qty,
-            unit_of_work.SqlAlchemyUnitOfWork(),
-        )
-    except (OutOfStock, InvalidSku) as e:
+        cmd = commands.Allocate(item.orderid, item.sku, item.qty)
+        uow = unit_of_work.SqlAlchemyUnitOfWork()
+        results = messagebus.handle(cmd, uow)
+        batchref = results.pop()
+    except InvalidSku as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)

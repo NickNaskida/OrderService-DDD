@@ -7,6 +7,7 @@ from tests.utils.random_refs import random_sku, random_batchref, random_orderid
 
 def post_to_add_batch(ref, sku, qty, eta):
     url = utils.get_api_url()
+    print(url)
     r = requests.post(
         f"{url}/add_batch", json={"ref": ref, "sku": sku, "qty": qty, "eta": eta}
     )

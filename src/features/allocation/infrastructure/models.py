@@ -1,5 +1,7 @@
-from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey, event
 from sqlalchemy.orm import registry
+
+from src.features.allocation.domain import model
 
 
 mapper_registry = registry()
@@ -37,3 +39,8 @@ allocations = Table(
     Column("orderline_id", ForeignKey("order_lines.id")),
     Column("batch_id", ForeignKey("batches.id")),
 )
+
+
+@event.listens_for(model.Product, "load")
+def receive_load(product, _):
+    product.events = []

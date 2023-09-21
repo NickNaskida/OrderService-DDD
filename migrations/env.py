@@ -5,7 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from src.features.allocation.infrastructure.orm import mapper_registry
+from src.features.allocation.infrastructure.models import mapper_registry
 from src.core.utils import get_postgres_uri
 
 # this is the Alembic Config object, which provides
