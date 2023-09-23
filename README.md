@@ -6,8 +6,8 @@ This project showcases an advanced Order Service built using Domain-Driven Desig
 ![Architecture](./img/architecture.svg)
 
 ### TODO:
-- [] Redis caching
-- [] External Events publisher to RabbitMQ
+- [ ] Redis caching
+- [ ] External Events publisher to RabbitMQ
 
 ### Tech Stack
 - Python
