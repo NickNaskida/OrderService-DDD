@@ -14,10 +14,28 @@ This project showcases an advanced Order Service built using Domain-Driven Desig
 - Docker
 
 ### Code Architecture
+```
+envs/
+src/
+├─ core/                    # settings and other configurations
+├─ features/
+│  ├─ allocation/
+│  │  ├─ api/               # command (write) service
+│  │  ├─ views/             # query (read) service
+│  │  ├─ service_layer/     # message bus and handlers
+│  │  ├─ domain/            # business logic
+│  │  ├─ infrastructure/    # db, email and other adapters.
+├─ main.py
+tests/
+├─ e2e/
+├─ integration/
+├─ unit/
+```
+
 
 ### Project Setup
-
 This project utilizes Docker Compose to run the application.
 
-
-
+```bash
+docker-compose up -d
+```
