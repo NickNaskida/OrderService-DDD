@@ -2,11 +2,13 @@ from datetime import datetime
 from fastapi import APIRouter, HTTPException, status
 
 from src.features.allocation.domain import commands
+from src.features.allocation.api.views import view_router
 from src.features.allocation.api.schema import BatchItem, OrderItem
 from src.features.allocation.service_layer import messagebus, unit_of_work
 from src.features.allocation.domain.exceptions import InvalidSku, OutOfStock
 
 api_router = APIRouter()
+api_router.include_router(view_router)
 
 
 @api_router.post("/add_batch", status_code=status.HTTP_201_CREATED)

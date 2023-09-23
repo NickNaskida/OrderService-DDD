@@ -12,3 +12,8 @@ class OrderItem(BaseModel):
     orderid: str = Field(..., example="order-001")
     sku: str = Field(..., example="SMALL-TABLE")
     qty: int = Field(gt=0, description="The quantity must be greater than zero", example=20)
+
+
+class AllocationItem(BaseModel):
+    sku: str = Field(..., example="SMALL-TABLE")
+    batchref: str = Field(..., example="batch-001")
