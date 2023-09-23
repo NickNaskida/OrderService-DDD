@@ -5,6 +5,10 @@ This project showcases an advanced Order Service built using Domain-Driven Desig
 ### Architecture
 ![Architecture](./img/architecture.svg)
 
+### TODO:
+- [] Redis caching
+- [] External Events publisher to RabbitMQ
+
 ### Tech Stack
 - Python
 - FastAPI
@@ -39,3 +43,7 @@ This project utilizes Docker Compose to run the application.
 ```bash
 docker-compose up -d
 ```
+
+### License
+This project is licensed under the terms of the MIT license.
+
