@@ -25,7 +25,7 @@ services:
     env_file:
       - envs/container.env
     volumes:
-      - ./data/postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
 
   redis:
     container_name: redis
@@ -35,8 +35,6 @@ services:
       - "6379:6379"
     env_file:
       - envs/container.env
-    volumes:
-      - ./data/redis-data:/data
 
   rabbitmq:
     container_name: rabbitmq
@@ -50,7 +48,7 @@ services:
     env_file:
       - envs/container.env
     volumes:
-      - ./data/rabbitmq-data:/var/lib/rabbitmq
+      - rabbitmq-data:/var/lib/rabbitmq
 
 
 networks:
@@ -63,7 +61,5 @@ volumes:
     name: backend-data
   postgres-data:
     name: postgres-data
-  redis-data:
-    name: redis-data
   rabbitmq-data:
     name: rabbitmq-data
